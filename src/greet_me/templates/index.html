@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // get client datetime
+        var currentDate = new Date();
+        var formattedDate = currentDate.toISOString();
+
+        // send datetime to server
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/datetime', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({ datetime: formattedDate }));
+    </script>
+</head>
+<body>
+    <h1>Hello!</h1>
+</body>
+</html>

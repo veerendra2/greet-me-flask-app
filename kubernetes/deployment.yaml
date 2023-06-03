@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: greet-me
-        image: quay.io/larsks/example:flaskapp
+        image: ghcr.io/veerendra2/greet-me-flask-app/greet-me:latest
       - name: nginx
         image: nginx:alpine3.17-slim
         ports:
@@ -29,3 +29,5 @@ spec:
         - name: nginx-config
           configMap:
             name: nginx-config
+      imagePullSecrets:
+        - name: regcred

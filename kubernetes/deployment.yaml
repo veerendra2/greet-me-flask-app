@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greet-me
+  namespace: apps
+  labels:
+    app: greet-me
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greet-me
+  template:
+    metadata:
+      labels:
+        app: greet-me
+    spec:
+      containers:
+      - name: greet-me
+        image: quay.io/larsks/example:flaskapp
+      - name: nginx
+        image: nginx:alpine3.17-slim
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-config

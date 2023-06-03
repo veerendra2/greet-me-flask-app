@@ -10,8 +10,7 @@ A simple flask application greets clients depending on time.
 >
 > Use a local Kubernetes cluster (Minikube, kind, rancher,....) to deploy your application.
 
-## Deploy
-TODO
+[Gitbook Documentation](https://dust6765.gitbook.io/greet-me-app-documentation/)
 
 ### Run locally
 ```bash
@@ -19,15 +18,3 @@ $ cd src/greet_me
 $ python3 greet_me.py
 INFO:Serving on http://0.0.0.0:8080
 ```
-## Configuration
-TODO
-
-## References
-## Flask related
-* https://stackoverflow.com/questions/40358675/flask-get-local-time
-* https://stackoverflow.com/questions/10659523/how-to-get-the-exact-local-time-of-client
-* https://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery
-* https://flask.palletsprojects.com/en/2.3.x/tutorial/templates/
-* https://github.com/veerendra2/flask-app
-### Unit tests
-* https://docs.python.org/3/library/unittest.html

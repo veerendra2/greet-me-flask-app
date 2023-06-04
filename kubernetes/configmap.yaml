@@ -5,17 +5,11 @@ metadata:
   namespace: apps
 data:
   nginx.conf: |
-    user nginx;
-    worker_processes  1;
-    events {
-      worker_connections  10240;
-    }
-    http {
-      server {
-          listen       80;
-          server_name  localhost;
-          location / {
-            proxy_pass http://localhost:8080;
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+            proxy_pass http://localhost:8000;
         }
-      }
     }

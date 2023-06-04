@@ -4,9 +4,7 @@ Author: Veerendra Kakumanu
 Description: A simple application greets clients according to time
 '''
 
-from flask import Flask, request, render_template
-import os
-import requests
+from flask import Flask, render_template, request, jsonify
 import logging
 from waitress import serve
 from datetime import datetime
@@ -14,6 +12,7 @@ from datetime import datetime
 __author__ = "Veerendra.Kakumanu"
 
 PORT = 8080
+APP_VERSION = "0.1"
 
 def greet_client(client_time):
     '''
@@ -23,24 +22,26 @@ def greet_client(client_time):
     :type game_name: string
     :return: string
     '''
-    if client_time < datetime.strptime('12:00', '%H:%M').time():
+    datetime_obj = datetime.strptime(client_time, "%Y-%m-%dT%H:%M:%S.%fZ").time()
+    if datetime_obj < datetime.strptime('12:00', '%H:%M').time():
         return "Good morning!"
-    elif client_time < datetime.strptime('18:00', '%H:%M').time():
+    elif datetime_obj < datetime.strptime('18:00', '%H:%M').time():
         return "Good afternoon!"
     else:
         return "Good evening!"
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder="templates")
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("index.html", version=APP_VERSION)
 
 @app.route('/datetime', methods=['POST'])
 def get_datetime():
-    datetime = request.json['datetime']
-    print('Client date and time:', datetime)
-    return datetime
+    client_datetime = request.json['datetime']
+    greet_msg = greet_client(client_datetime)
+    print("Client date and time:", client_datetime)
+    return jsonify(greet_msg=greet_msg)
 
 def main():
   logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)

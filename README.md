@@ -1,5 +1,5 @@
-# Greet Me app
-A simple flask application greets clients depending on time.
+# Greet Me
+A simple flask application that greets you according to the time of day.
 
 ## Abstract
 > First, create a very simple application that greets you according to the time of day. “Good Morning, Good Afternoon, Good Evening”. It should run in a Docker container and provide the service on port 8080. Don’t forget to write a couple of tests.

@@ -18,10 +18,16 @@ spec:
       containers:
       - name: greet-me
         image: ghcr.io/veerendra2/greet-me-flask-app/greet-me:latest
+        ports:
+          - name: http
+            containerPort: 8080
+        imagePullPolicy: Always
+
       - name: nginx
         image: nginx:alpine3.17-slim
         ports:
-        - containerPort: 80
+          - name: http
+            containerPort: 80
         volumeMounts:
           - name: nginx-config
             mountPath: /etc/nginx/conf.d

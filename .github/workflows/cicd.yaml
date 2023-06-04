@@ -16,10 +16,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+
       - name: Run lint tests
         run: |
-          # Enter the command to run your lint tests here
-          # For example: pylint src/
+          pylint src/
 
   unit_test:
     runs-on: ubuntu-latest
@@ -29,10 +36,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pytest
+
       - name: Run unit tests
         run: |
-          # Enter the command to run your unit tests here
-          # For example: pytest tests/
+          pytest tests/
 
   build_and_push:
     needs: [lint]
@@ -45,8 +60,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          # Enter the commands to build and push your Docker image here
-          # For example:
           # docker build -t your-docker-image-tag .
           # docker push your-docker-image-tag:latest
 
@@ -61,5 +74,4 @@ jobs:
 
       - name: Run deploy script on self-hosted runner
         run: |
-          # Enter the commands to deploy using kubectl here
-          # For example: kubectl create -f deploy.yaml
+          kubectl get pods

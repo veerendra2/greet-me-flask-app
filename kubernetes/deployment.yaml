@@ -22,7 +22,6 @@ spec:
           - name: http
             containerPort: 8080
         imagePullPolicy: Always
-
       - name: nginx
         image: nginx:alpine3.17-slim
         ports:

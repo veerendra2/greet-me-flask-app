@@ -9,4 +9,4 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: game-2048
+    app: greet-me

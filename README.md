@@ -12,40 +12,6 @@ A simple flask application that greets you according to the time of day.
 >
 > Use a local Kubernetes cluster (Minikube, kind, rancher,....) to deploy your application.
 
-Project directory tree :evergreen_tree:
-```bash
-$ tree .
-.
-├── Dockerfile
-├── README.md
-├── greet_me.toml
-├── kubernetes
-│   ├── README.md
-│   ├── configmap.yaml
-│   ├── deployment.yaml
-│   ├── examples
-│   │   └── httpbin.yaml
-│   ├── ingress.yaml
-│   ├── kustomize.yaml
-│   └── service.yaml
-├── requirements.txt
-├── scripts
-│   └── install-tools.sh
-├── setup.cfg
-├── setup.py
-├── src
-│   └── greet_me
-│       ├── __init__.py
-│       ├── greet_me.py
-│       └── templates
-│           └── index.html
-├── tests
-│   └── greet_me_logic_test.py
-└── tox.ini
-
-7 directories, 19 files
-```
-
 ## :arrow_forward: Run Locally
 ```bash
 $ git clone git@github.com:veerendra2/greet-me-flask-app.git

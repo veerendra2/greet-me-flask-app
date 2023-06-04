@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
 Author: Veerendra Kakumanu
-Description: A simple application greets clients according to time
+Description: A simple flask application that greets you according to the time of day.
 '''
 
 from flask import Flask, render_template, request, jsonify
@@ -36,16 +36,16 @@ app = Flask(__name__, template_folder="templates")
 def home():
     return render_template("index.html", version=APP_VERSION)
 
-@app.route('/datetime', methods=['POST'])
+@app.route('/datetime', methods=["POST"])
 def get_datetime():
-    client_datetime = request.json['datetime']
+    client_datetime = request.json["datetime"]
     greet_msg = greet_client(client_datetime)
     print("Client date and time:", client_datetime)
     return jsonify(greet_msg=greet_msg)
 
 def main():
   logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
-  serve(app, host='0.0.0.0', port=PORT)
+  serve(app, host="0.0.0.0", port=PORT)
 
 if __name__ == '__main__':
     main()

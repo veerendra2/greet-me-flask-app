@@ -1,7 +1,9 @@
 # Greet Me
 A simple flask application that greets you according to the time of day.
 
-## Abstract
+:diamond_shape_with_a_dot_inside: _**Refer :books:[Gitbook Documentation](https://dust6765.gitbook.io/greet-me-app-documentation/):books: for more info.**_
+
+## :information_source: Abstract
 > First, create a very simple application that greets you according to the time of day. “Good Morning, Good Afternoon, Good Evening”. It should run in a Docker container and provide the service on port 8080. Don’t forget to write a couple of tests.
 >
 > Now that you've warmed up, we’ll tell you the real challenge.
@@ -10,11 +12,54 @@ A simple flask application that greets you according to the time of day.
 >
 > Use a local Kubernetes cluster (Minikube, kind, rancher,....) to deploy your application.
 
-[Gitbook Documentation](https://dust6765.gitbook.io/greet-me-app-documentation/)
-
-### Run locally
+Project directory tree :evergreen_tree:
 ```bash
-$ cd src/greet_me
-$ python3 greet_me.py
+$ tree .
+.
+├── Dockerfile
+├── README.md
+├── greet_me.toml
+├── kubernetes
+│   ├── README.md
+│   ├── configmap.yaml
+│   ├── deployment.yaml
+│   ├── examples
+│   │   └── httpbin.yaml
+│   ├── ingress.yaml
+│   ├── kustomize.yaml
+│   └── service.yaml
+├── requirements.txt
+├── scripts
+│   └── install-tools.sh
+├── setup.cfg
+├── setup.py
+├── src
+│   └── greet_me
+│       ├── __init__.py
+│       ├── greet_me.py
+│       └── templates
+│           └── index.html
+├── tests
+│   └── greet_me_logic_test.py
+└── tox.ini
+
+7 directories, 19 files
+```
+
+## :arrow_forward: Run Locally
+```bash
+$ git clone git@github.com:veerendra2/greet-me-flask-app.git
+
+$ python3 src/greet_me/greet_me.py
 INFO:Serving on http://0.0.0.0:8080
+
+# install as pypi package
+$ pip3 install -e .
+
+# run cli
+$ greet_me
+INFO:Serving on http://0.0.0.0:8080
+
+# uninstall pypi package
+$ pip3 uninstall greet_me
 ```

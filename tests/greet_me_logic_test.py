@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import unittest
 from datetime import datetime
 from greet_me import greet_client

@@ -35,10 +35,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Set vars
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
       - name: Step
         run: echo ${GITHUB_SHA::7}
 
@@ -48,7 +44,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/greet-me-flask-app/greet-me:${{ steps.vars.outputs.sha_short }}
+          tags: ghcr.io/${{ github.repository_owner }}/greet-me-flask-app/greet-me:${GITHUB_SHA::7}
 
   deploy_staging:
     needs: [build_and_push]
@@ -58,6 +54,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Step
+        run: echo ${GITHUB_SHA::7}
 
       - name: Run deploy script on self-hosted runner
         run: |
@@ -69,13 +68,15 @@ jobs:
           #sed "s/greet-me:.*/greet-me:v0.2/g" patch-image.yaml
 
   deploy_prod:
-    needs: [build_and_push]
+    needs: [deploy_staging]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Step
+        run: echo ${GITHUB_SHA::7}
 
       - name: Run deploy script on self-hosted runner
         run: |

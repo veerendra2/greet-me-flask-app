@@ -53,7 +53,7 @@ jobs:
           pytest tests/
 
   build_and_push:
-    needs: [lint]
+    needs: [lint_and_test]
     if: "-n \"$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} src/)\""
     runs-on: ubuntu-latest
 

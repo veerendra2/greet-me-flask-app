@@ -12,10 +12,14 @@ $ tree .
 │   ├── service.yaml
 │   └── serviceaccount.yaml
 └── stages
-    ├── dev
-    │   └── kustomization.yaml
-    └── prod
-        └── kustomization.yaml
+    ├── prod
+    │   ├── kustomization.yaml
+    │   ├── patch-image.yaml
+    │   └── patch-ingress.yaml
+    └── staging
+        ├── kustomization.yaml
+        ├── patch-image.yaml
+        └── patch-ingress.yaml
 
-4 directories, 9 files
+4 directories, 13 files
 ```

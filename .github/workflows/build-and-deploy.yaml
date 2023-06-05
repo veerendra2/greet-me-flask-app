@@ -55,8 +55,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Step
-        run: echo ${GITHUB_SHA::7}
+      - name: Echo
+        run: |
+          echo ${{ needs.build_and_push.outputs.sha_short }}
 
       - name: Run deploy script on self-hosted runner
         run: |
@@ -75,6 +76,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Echo
+        run: |
+          echo ${{ needs.build_and_push.outputs.sha_short }}
 
       - name: Run deploy script on self-hosted runner
         run: |

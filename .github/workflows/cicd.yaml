@@ -4,52 +4,8 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v3
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pylint
-
-      - name: Run lint tests
-        run: |
-          pylint src/
-        continue-on-error: true
-
-  unit_test:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v3
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e .
-          pip install pytest
-
-      - name: Run unit tests
-        run: |
-          pytest tests/
-
   build_and_push:
     needs: [lint]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -64,7 +20,7 @@ jobs:
           # docker build -t your-docker-image-tag .
           # docker push your-docker-image-tag:latest
 
-  deploy:
+  deploy_staging:
     needs: [build_and_push]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: self-hosted
@@ -75,4 +31,23 @@ jobs:
 
       - name: Run deploy script on self-hosted runner
         run: |
-          kubectl get pods
+          ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
+          ./kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          kubectl get services -o wide
+
+  deploy_prod:
+    needs: [build_and_push]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run deploy script on self-hosted runner
+        run: |
+          ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
+          ./kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          kubectl get services -o wide

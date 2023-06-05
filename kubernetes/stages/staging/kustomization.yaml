@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+
+namespace: staging
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: greet-me
+    path: patch-image.yaml
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: greet-me-ingress
+    path: patch-ingress.yaml
+
+# kustomize edit set image greet-me=ghcr.io/veerendra2/greet-me-flask-app/greet-me:v0.1
+# images:
+# - name: greet-me
+#   newName: ghcr.io/veerendra2/greet-me-flask-app/greet-me
+#   newTag: v0.1

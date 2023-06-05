@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: greet-me
-        image: ghcr.io/veerendra2/greet-me-flask-app/greet-me:v0.1
+        image: ghcr.io/veerendra2/greet-me-flask-app/greet-me
         imagePullPolicy: Always
       - name: nginx
         image: nginx:1.24.0-alpine

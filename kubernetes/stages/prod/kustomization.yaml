@@ -1,7 +1,19 @@
 ---
-bases:
+resources:
   - ../../base
 
 namespace: prod
 
-resources:
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: greet-me
+    path: patch-image.yaml
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: greet-me-ingress
+    path: patch-ingress.yaml

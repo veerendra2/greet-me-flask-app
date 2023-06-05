@@ -12,7 +12,7 @@ on:
   #     - main
 jobs:
   lint_test:
-    uses: veerendra2/greet-me-flask-app/tree/main/.github/workflows/linting-test.yaml
+    uses: ./.github/workflows/linting-test.yaml
 
   build_and_push:
     needs: [lint_and_test]

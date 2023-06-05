@@ -1,9 +1,7 @@
 name: Linting and Tests
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   lint:
@@ -28,7 +26,6 @@ jobs:
 
   unit_test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
 
     steps:
       - name: Checkout repository

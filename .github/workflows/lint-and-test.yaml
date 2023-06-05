@@ -1,4 +1,4 @@
-name: Linting and Tests
+name: Linting and Run Test Cases
 
 on:
   workflow_call:

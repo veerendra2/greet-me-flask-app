@@ -1,0 +1,50 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      blog:
+        description: "Run Tests"
+        required: true
+        default: "yes"
+
+  # pull_request:
+  #   branches:
+  #     - main
+
+jobs:
+  lint_test:
+    uses: ./.github/workflows/lint-and-test.yaml
+
+  deploy_staging:
+    needs: [build_and_push]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run deploy script on self-hosted runner
+        run: |
+          #./kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
+          #./kustomize build . | kubectl apply -f -
+          #kubectl rollout status deployment/$DEPLOYMENT_NAME
+          #kubectl get services -o wide
+          #sed "s/greet-me:.*/greet-me:v0.2/g" patch-image.yaml
+
+  deploy_prod:
+    needs: [build_and_push]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run deploy script on self-hosted runner
+        run: |
+          #./kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
+          #./kustomize build . | kubectl apply -f -
+          #kubectl rollout status deployment/$DEPLOYMENT_NAME
+          #kubectl get services -o wide

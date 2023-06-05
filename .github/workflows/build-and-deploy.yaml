@@ -7,15 +7,17 @@ on:
         description: "Run Tests"
         required: true
         default: "yes"
+
   # pull_request:
   #   branches:
   #     - main
+
 jobs:
   lint_test:
-    uses: ./.github/workflows/linting-test.yaml
+    uses: ./.github/workflows/lint-and-test.yaml
 
   build_and_push:
-    needs: [lint_and_test]
+    needs: [lint_test]
     if: "-n \"$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} src/)\""
     runs-on: ubuntu-latest
 

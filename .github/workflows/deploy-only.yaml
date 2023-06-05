@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/lint-and-test.yaml
 
   deploy_staging:
-    needs: [build_and_push]
+    needs: [lint_test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: self-hosted
 

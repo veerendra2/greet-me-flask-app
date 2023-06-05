@@ -35,13 +35,20 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      - name: Set vars
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Step
+        run: echo ${GITHUB_SHA::7}
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/greet-me-flask-app/greet-me:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository_owner }}/greet-me-flask-app/greet-me:${{ steps.vars.outputs.sha_short }}
 
   deploy_staging:
     needs: [build_and_push]
@@ -54,6 +61,7 @@ jobs:
 
       - name: Run deploy script on self-hosted runner
         run: |
+          echo ${{ needs.build_and_push.outputs.vars }}
           #./kustomize edit set image gcr.io/PROJECT_ID/IMAGE:TAG=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
           #./kustomize build . | kubectl apply -f -
           #kubectl rollout status deployment/$DEPLOYMENT_NAME

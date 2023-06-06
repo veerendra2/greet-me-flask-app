@@ -51,7 +51,7 @@ jobs:
   deploy_staging:
     needs: [build_and_push]
     runs-on: self-hosted
-    #environment: stage
+    environment: stage
 
     steps:
       - name: Checkout repository
@@ -75,7 +75,6 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull
           git add .
           if ! git diff-index --quiet HEAD; then
             git commit -m "Update docker image tag"
@@ -85,7 +84,7 @@ jobs:
   deploy_prod:
     needs: [deploy_staging]
     runs-on: self-hosted
-    #environment: prod
+    environment: prod
 
     steps:
       - name: Checkout repository
@@ -109,6 +108,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull
           git add .
           if ! git diff-index --quiet HEAD; then
             git commit -m "Update docker image tag"

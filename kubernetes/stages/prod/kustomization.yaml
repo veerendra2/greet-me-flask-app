@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - namespace.yml
+  # - secrets.yaml
 
 namespace: prod
 

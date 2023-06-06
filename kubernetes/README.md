@@ -14,12 +14,14 @@ $ tree .
 └── stages
     ├── prod
     │   ├── kustomization.yaml
+    │   ├── namespace.yml
     │   ├── patch-image.yaml
     │   └── patch-ingress.yaml
     └── staging
         ├── kustomization.yaml
+        ├── namespace.yml
         ├── patch-image.yaml
         └── patch-ingress.yaml
 
-4 directories, 13 files
+4 directories, 15 files
 ```

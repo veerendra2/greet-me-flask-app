@@ -6,6 +6,11 @@ metadata:
     app: greet-me
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: greet-me
@@ -18,8 +23,22 @@ spec:
       - name: greet-me
         image: ghcr.io/veerendra2/greet-me-flask-app/greet-me
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 60Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
       - name: nginx
         image: nginx:1.24.0-alpine
+        resources:
+          requests:
+            cpu: 25m
+            memory: 32Mi
+          limits:
+            cpu: 50m
+            memory: 64Mi
         ports:
           - name: http
             containerPort: 80

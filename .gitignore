@@ -1,3 +1,5 @@
 src/greet_me/__pycache__/**
 src/greet_me.egg-info/**
 tests/__pycache__
+kubernetes/stages/prod/secrets.yaml
+kubernetes/stages/staging/secrets.yaml

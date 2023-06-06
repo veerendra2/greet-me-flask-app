@@ -15,7 +15,7 @@ A simple flask application that greets you according to the time of day.
 ## :arrow_forward: Run Locally
 ```bash
 $ git clone git@github.com:veerendra2/greet-me-flask-app.git
-
+$ cd greet-me-flask-app
 $ python3 src/greet_me/greet_me.py
 INFO:Serving on http://0.0.0.0:8080
 

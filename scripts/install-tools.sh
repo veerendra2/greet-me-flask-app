@@ -19,7 +19,7 @@
 # kustomize
 curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 
-$ chmod +x {./kind,./kubectl,./kustomize}
-$ sudo mv ./kind /usr/local/bin/kind
-$ sudo mv ./kubectl /usr/local/bin/kubectl
-$ sudo mv ./kustomize /usr/local/bin/
+chmod +x {./kind,./kubectl,./kustomize}
+mv ./kind /usr/local/bin/kind
+mv ./kubectl /usr/local/bin/kubectl
+mv ./kustomize /usr/local/bin/

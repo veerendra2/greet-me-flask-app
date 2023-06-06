@@ -10,7 +10,8 @@ on:
 
   pull_request:
     paths:
-      - "kubernetes/**"
+      - "kubernetes/base/**"
+      - "kubernetes/stages/**"
 
 jobs:
   lint_test:

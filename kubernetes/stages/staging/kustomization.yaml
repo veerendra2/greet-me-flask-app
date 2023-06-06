@@ -16,11 +16,10 @@ patchesJson6902:
       name: greet-me
     path: patch-image.yaml
   - target:
-      group: networking.k8s.io
       version: v1
-      kind: Ingress
-      name: greet-me-ingress
-    path: patch-ingress.yaml
+      kind: Service
+      name: greet-me
+    path: patch-service.yaml
 
 # kustomize edit set image greet-me=ghcr.io/veerendra2/greet-me-flask-app/greet-me:v0.1
 # images:

@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: ngrok
   rules:
-    - host: greet-me.ngrok-free.app
+    - host: greet-me-app-prod.ngrok-free.app
       http:
         paths:
           - path: /

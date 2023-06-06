@@ -52,6 +52,8 @@ jobs:
     needs: [build_and_push]
     runs-on: self-hosted
     environment: stage
+    outputs:
+      sha_short : ${{ needs.build_and_push.outputs.sha_short }}
 
     steps:
       - name: Checkout repository
@@ -96,7 +98,7 @@ jobs:
         run: |
           git pull origin ${{ github.head_ref }}
           cd kubernetes/stages/prod
-          sed -i "s/greet-me:.*/greet-me:${{ needs.build_and_push.outputs.sha_short }}/g" patch-image.yaml
+          sed -i "s/greet-me:.*/greet-me:${{ needs.deploy_staging.outputs.sha_short }}/g" patch-image.yaml
           cat patch-image.yaml
 
       - name: Deploy to Prod

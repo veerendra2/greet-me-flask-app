@@ -94,7 +94,8 @@ jobs:
 
       - name: Update docker image label
         run: |
-          cd kubernetes/stages/staging
+          git pull origin ${{ github.head_ref }}
+          cd kubernetes/stages/prod
           sed -i "s/greet-me:.*/greet-me:${{ needs.build_and_push.outputs.sha_short }}/g" patch-image.yaml
           cat patch-image.yaml
 
@@ -108,7 +109,6 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull origin ${{ github.head_ref }}
           git add .
           if ! git diff-index --quiet HEAD; then
             git commit -m "Update docker image tag"

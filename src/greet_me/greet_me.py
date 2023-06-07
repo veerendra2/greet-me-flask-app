@@ -12,7 +12,7 @@ from datetime import datetime
 __author__ = "Veerendra.Kakumanu"
 
 PORT = 8080
-APP_VERSION = "0.1"
+APP_VERSION = "0.2"
 
 def greet_client(client_time):
     '''

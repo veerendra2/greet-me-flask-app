@@ -154,7 +154,7 @@ jobs:
           minikube service list
           minikube service -n prod greet-me --url
           echo "---------------------------------------------"
-          curl $(minikube service -n prod greet-me --url)/health/
+          curl -v $(minikube service -n prod greet-me --url)/health/
 
       - name: Commit changes
         if: needs.build_and_push.result == 'success'

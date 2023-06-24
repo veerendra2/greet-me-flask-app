@@ -102,8 +102,8 @@ jobs:
       - name: Test service URLs
         run: |
           minikube service list
-          minikube service example --url
-          curl $(minikube service example --url)
+          minikube service greet-me --url
+          curl $(minikube service greet-me --url)
 
       - name: Commit changes
         if: needs.build_and_push.result == 'success'
@@ -153,8 +153,8 @@ jobs:
       - name: Test service URLs
         run: |
           minikube service list
-          minikube service example --url
-          curl $(minikube service example --url)
+          minikube service greet-me --url
+          curl $(minikube service greet-me --url)
 
       - name: Commit changes
         if: needs.build_and_push.result == 'success'

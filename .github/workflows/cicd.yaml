@@ -81,10 +81,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Start minikube(staging)
+      - name: Start minikube
         uses: medyagh/setup-minikube@master
 
-      - name: Test minikube(staging)
+      - name: Test minikube
         run: kubectl cluster-info
 
       - name: Update docker image label
@@ -104,7 +104,7 @@ jobs:
           minikube service list
           minikube service -n staging greet-me --url
           echo "---------------------------------------------"
-          curl $(minikube service -n staging greet-me --url)
+          curl $(minikube service -n staging greet-me --url)/health/
 
       - name: Commit changes
         if: needs.build_and_push.result == 'success'
@@ -113,10 +113,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "Update docker image tag"
-            git push origin HEAD:${{ github.head_ref }}
-          fi
+          git commit -m "Update docker image tag"
+          git push origin HEAD:${{ github.head_ref }}
 
   deploy_prod:
     needs: [deploy_staging]
@@ -132,10 +130,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Start minikube(prod)
+      - name: Start minikube
         uses: medyagh/setup-minikube@master
 
-      - name: Test minikube(prod)
+      - name: Test minikube
         run: kubectl cluster-info
 
       - name: Update docker image label
@@ -156,7 +154,7 @@ jobs:
           minikube service list
           minikube service -n prod greet-me --url
           echo "---------------------------------------------"
-          curl $(minikube service -n prod greet-me --url)
+          curl $(minikube service -n prod greet-me --url)/health/
 
       - name: Commit changes
         if: needs.build_and_push.result == 'success'

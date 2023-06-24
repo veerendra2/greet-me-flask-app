@@ -1,24 +1,40 @@
-name: Build and Deploy
+name: CI/CD
 
 on:
-  # workflow_dispatch:
-  #   inputs:
-  #     blog:
-  #       description: "Run Tests"
-  #       required: true
-  #       default: "yes"
-
-  pull_request:
+  pull_request_review:
+    types:
+      - submitted
     paths:
       - "src/**"
+      - "kubernetes/**"
 
 jobs:
-  lint_test:
-    uses: ./.github/workflows/lint-and-test.yaml
+  detect_changes:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: read
+
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+      kubernetes: ${{ steps.filter.outputs.kubernetes }}
+
+    steps:
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          src:
+            - 'src/**'
+          kubernetes:
+            - 'kubernetes/**'
 
   build_and_push:
-    needs: [lint_test]
+    needs: [detect_changes]
+    if: ${{ needs.detect_changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
+
     outputs:
       sha_short : ${{ steps.vars.outputs.sha_short }}
 
@@ -40,18 +56,22 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Build and push Docker image
+      - name: Build and push docker image(linux/arm64)
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/greet-me-flask-app/greet-me:${{ steps.vars.outputs.sha_short }}
-          platforms: linux/arm64
+          platforms: linux/arm64,linux/amd64
 
   deploy_staging:
-    needs: [build_and_push]
+    needs: [detect_changes, build_and_push]
+    if: |
+      always() &&
+      (needs.build_and_push.result == 'success' || needs.build_and_push.result == 'skipped')
     runs-on: self-hosted
     environment: stage
+
     outputs:
       sha_short : ${{ needs.build_and_push.outputs.sha_short }}
 
@@ -61,7 +81,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Start minikube(staging)
+        uses: medyagh/setup-minikube@master
+
+      - name: Test minikube(staging)
+        run: kubectl cluster-info
+
       - name: Update docker image label
+        if: needs.build_and_push.result == 'success'
         run: |
           cd kubernetes/stages/staging
           sed -i "s/greet-me:.*/greet-me:${{ needs.build_and_push.outputs.sha_short }}/g" patch-image.yaml
@@ -72,7 +99,15 @@ jobs:
           kustomize build kubernetes/stages/staging/ | kubectl apply -f -
           sleep 10
 
+      - name: Test service URLs
+        run: |
+          minikube service list
+          minikube service example --url
+          echo "------------------opening the service------------------"
+          curl $(minikube service example --url)
+
       - name: Commit changes
+        if: needs.build_and_push.result == 'success'
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.name "github-actions[bot]"
@@ -85,6 +120,9 @@ jobs:
 
   deploy_prod:
     needs: [deploy_staging]
+    if: |
+      always() &&
+      (needs.deploy_staging.result == 'success')
     runs-on: self-hosted
     environment: prod
 
@@ -94,7 +132,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Start minikube(prod)
+        uses: medyagh/setup-minikube@master
+
+      - name: Test minikube(prod)
+        run: kubectl cluster-info
+
       - name: Update docker image label
+        if: needs.build_and_push.result == 'success'
         run: |
           git pull origin ${{ github.head_ref }}
           cd kubernetes/stages/prod
@@ -106,7 +151,14 @@ jobs:
           kustomize build kubernetes/stages/prod/ | kubectl apply -f -
           sleep 10
 
+      - name: Test service URLs
+        run: |
+          minikube service list
+          minikube service example --url
+          curl $(minikube service example --url)
+
       - name: Commit changes
+        if: needs.build_and_push.result == 'success'
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.name "github-actions[bot]"

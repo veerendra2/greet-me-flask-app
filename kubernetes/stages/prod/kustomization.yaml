@@ -4,8 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - namespace.yml
-  - ingress.yaml
-  # - secrets.yaml
+  # - ingress.yaml
 
 namespace: prod
 
@@ -16,4 +15,8 @@ patchesJson6902:
       kind: Deployment
       name: greet-me
     path: patch-image.yaml
-
+  - target:
+      version: v1
+      kind: Service
+      name: greet-me
+    path: patch-service.yaml

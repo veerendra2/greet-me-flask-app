@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Author: Veerendra Kakumanu
+Author: Veerendra K
 Description: A simple flask application that greets you according to the time of day.
 '''
 
@@ -9,7 +9,7 @@ import logging
 from waitress import serve
 from datetime import datetime
 
-__author__ = "Veerendra.Kakumanu"
+__author__ = "Veerendra.K"
 
 PORT = 8080
 APP_VERSION = "0.2"

@@ -10,9 +10,9 @@ if (3, 0) < version < (3, 4):
 
 setuptools.setup(
     name='greet_me',
-    version='0.1',
+    version='0.2',
     description='Greet Me App',
-    author='Veerendra Kakumanu',
+    author='Veerendra K',
     packages=setuptools.find_packages(where="src"),
     install_requires=["waitress", "Flask"],
     entry_points={'console_scripts': [

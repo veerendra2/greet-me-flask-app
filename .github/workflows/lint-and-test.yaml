@@ -1,7 +1,10 @@
 name: Linting and Run Test Cases
 
 on:
-  workflow_call:
+  pull_request:
+    paths:
+      - "src/**"
+      - "kubernetes/**"
 
 jobs:
   lint:

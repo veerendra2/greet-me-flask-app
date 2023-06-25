@@ -56,7 +56,7 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Build and push docker image(linux/arm64)
+      - name: Build and push docker image
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -81,10 +81,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Start minikube(staging)
+      - name: Start minikube
         uses: medyagh/setup-minikube@master
 
-      - name: Test minikube(staging)
+      - name: Test minikube
         run: kubectl cluster-info
 
       - name: Update docker image label
@@ -102,8 +102,9 @@ jobs:
       - name: Test service URLs
         run: |
           minikube service list
-          minikube service greet-me --url
-          curl $(minikube service greet-me --url)
+          minikube service -n staging greet-me --url
+          echo "---------------------------------------------"
+          curl -v "$(minikube service -n staging greet-me --url)/health/"
 
       - name: Commit changes
         if: needs.build_and_push.result == 'success'
@@ -131,10 +132,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Start minikube(prod)
+      - name: Start minikube
         uses: medyagh/setup-minikube@master
 
-      - name: Test minikube(prod)
+      - name: Test minikube
         run: kubectl cluster-info
 
       - name: Update docker image label
@@ -153,8 +154,9 @@ jobs:
       - name: Test service URLs
         run: |
           minikube service list
-          minikube service greet-me --url
-          curl $(minikube service greet-me --url)
+          minikube service -n prod greet-me --url
+          echo "---------------------------------------------"
+          curl -v $(minikube service -n prod greet-me --url)/health/
 
       - name: Commit changes
         if: needs.build_and_push.result == 'success'

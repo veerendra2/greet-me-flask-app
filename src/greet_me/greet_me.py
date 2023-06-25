@@ -43,6 +43,10 @@ def get_datetime():
     print("Client date and time:", client_datetime)
     return jsonify(greet_msg=greet_msg)
 
+@app.route('/health', methods=["GET"])
+def health():
+    return "ok"
+
 def main():
   logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
   serve(app, host="0.0.0.0", port=PORT)

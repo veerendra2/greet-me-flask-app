@@ -81,14 +81,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Echo vars
-        run: |
-          git branch --show-current
-          echo "----------------------------"
-          echo ${{ github.head_ref }}
-          echo "----------------------------"
-          echo ${{ github.ref_name }}
-
       - name: Start minikube
         uses: medyagh/setup-minikube@master
 

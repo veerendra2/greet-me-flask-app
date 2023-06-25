@@ -81,6 +81,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Echo vars
+        run: |
+          echo ${{ github.head_ref }}
+          echo "----------------------------"
+          echo ${{ github.ref_name }}
+
       - name: Start minikube
         uses: medyagh/setup-minikube@master
 
@@ -115,7 +121,7 @@ jobs:
           git add .
           if ! git diff-index --quiet HEAD; then
             git commit -m "Update docker image tag"
-            git push
+            git push origin HEAD:${{ github.head_ref }}
           fi
 
   deploy_prod:
